@@ -42,9 +42,9 @@ class Slider extends PureComponent {
         onMove={this.handleMove}
         style={{
           transform,
-          webkitTransform: transform,
-          mozTransform: transform,
-          oTransform: transform
+          WebkitTransform: transform,
+          MozTransform: transform,
+          OTransform: transform
         }}
       >
         {children}

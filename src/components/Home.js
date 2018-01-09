@@ -26,9 +26,9 @@ const bundles = [
 class Home extends PureComponent {
   render () {
     return (
-      <div className='Home'>
+      <div>
         <Slider
-          className={css(styles.container)}
+          className={css(styles.bundles)}
           orientation='vertical'
         >
           {bundles.map((bundle, i) => (
@@ -53,7 +53,7 @@ class Home extends PureComponent {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  bundles: {
     position: 'absolute',
     bottom: 0,
     left: 0,
