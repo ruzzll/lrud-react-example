@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Lrud React Example</title>
+  <style>
+    html, body {
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      font-family: sans-serif !important;
+    }
+    #app {
+      position: relative;
+      overflow: hidden;
+      top: 50%;
+      background-color: #221F1F;
+      color: #ebebeb;
+    }
+    .focused {
+      color: #E50914;
+    }
+  </style>
+  <script type="text/javascript">
+    (function () {
+      var styles = {
+        540: 'body { font-size: 15px !important; line-height: 20px !important; } #app { width: 960px; height: 540px; margin: -270px auto 0 auto; }',
+        720: 'body { font-size: 20px !important; line-height: 26px !important; } #app { width: 1280px; height: 720px; margin: -360px auto 0 auto; }',
+        1080: 'body { font-size: 30px !important; line-height: 39px !important; } #app { width: 1920px; height: 1080px; margin: -540px auto 0 auto; }'
+      }
+      var baseFontSize = { 540: 15, 720: 20, 1080: 30 }
+      var match = window.location.search.match(/layout=(540|720|1080)/) || [ , 720 ]
+      var resolution = parseInt(match[1], 10)
+      var style = document.createElement('style')
+      var head = document.getElementsByTagName('head')[0]
+
+      style.type = 'text/css'
+      style.innerHTML = styles[resolution]
+      head.appendChild(style)
+
+      window.App = {
+        resolution: resolution
+      }
+    }())
+  </script>
+</head>
+<body>
+  <div id="app"></div>
+</body>
+</html>
