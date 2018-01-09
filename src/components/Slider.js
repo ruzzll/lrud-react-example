@@ -5,9 +5,9 @@ import { StyleSheet, css } from 'aphrodite'
 import Focusable from './Focusable'
 
 const int = (n) => parseInt(n, 10)
-const getComputedWidth = (style) => int(style.width) + int(style.marginLeft) + int(style.marginRight)
-const getComputedHeight = (style) => int(style.height) + int(style.marginTop) + int(style.marginBottom)
-const isRightDown = ({ orientation, offset }) => (orientation === 'horizontal' && offset === 1) || (orientation === 'vertical' && offset === 1)
+const getComputedWidth = ({ width, marginLeft, marginRight }) => int(width) + int(marginLeft) + int(marginRight)
+const getComputedHeight = ({ height, marginTop, marginBottom }) => int(height) + int(marginTop) + int(marginBottom)
+const isRightDown = ({ orientation: or, offset: off }) => (or === 'horizontal' && off === 1) || (or === 'vertical' && off === 1)
 
 class Slider extends PureComponent {
   state = {

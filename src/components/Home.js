@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import { StyleSheet, css } from 'aphrodite'
 import Slider from './Slider'
 import Card from './Card'
+import Focusable from './Focusable'
 
 const bundle = {
   items: [{
@@ -32,18 +33,19 @@ class Home extends PureComponent {
           orientation='vertical'
         >
           {bundles.map((bundle, i) => (
-            <Slider
-              key={i}
-              id={bundle.id}
-              className={css(styles.bundle)}
-            >
-              {bundle.items.map((item, i) => (
-                <Card
-                  key={i}
-                  {...item}
-                />
-              ))}
-            </Slider>
+            <Focusable key={i}>
+              <h3 className={css(styles.title)}>
+                {bundle.title}
+              </h3>
+              <Slider id={bundle.id}>
+                {bundle.items.map((item, i) => (
+                  <Card
+                    key={i}
+                    {...item}
+                  />
+                ))}
+              </Slider>
+            </Focusable>
           ))}
         </Slider>
         <div className={css(styles.focus)} />
@@ -58,19 +60,19 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: '14em',
+    height: '15em',
     padding: '0 5em'
-  },
-  bundle: {
-    marginBottom: '0.5em'
   },
   focus: {
     position: 'absolute',
     height: '8em',
     width: '14em',
-    bottom: '5.8em',
+    bottom: '4.5em',
     left: '4.8em',
     border: '0.2em solid white'
+  },
+  title: {
+    padding: '0.5em 0'
   }
 })
 
