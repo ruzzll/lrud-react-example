@@ -1,5 +1,27 @@
 const path = require('path')
+const webpack = require('webpack')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+
+let plugins = [
+  new CleanWebpackPlugin([ 'public' ]),
+  new HtmlWebpackPlugin({
+    template: './src/index.html'
+  })
+]
+
+if (process.env.NODE_ENV === 'production') {
+  plugins = [
+    ...plugins,
+    new UglifyJSPlugin({
+      sourceMap: true
+    }),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production')
+    })
+  ]
+}
 
 module.exports = {
   entry: [
@@ -7,7 +29,7 @@ module.exports = {
     './src/main.js'
   ],
   output: {
-    filename: 'bundle.js',
+    filename: '[name].[chunkhash].js',
     path: path.resolve(__dirname, './public')
   },
   module: {
@@ -19,11 +41,7 @@ module.exports = {
       use: [ 'style-loader', 'css-loader' ]
     }]
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './src/index.html'
-    })
-  ],
+  plugins,
   devtool: 'source-map',
   devServer: {
     contentBase: './public',
