@@ -11,6 +11,7 @@ class Slider extends PureComponent {
   position = 0
   headPosition = 0
   slider = null
+  tween = null
 
   componentDidMount () {
     const { id, children } = this.props
@@ -29,6 +30,9 @@ class Slider extends PureComponent {
       moveElement({
         el: this.slider,
         skipAnim: true,
+        from: {
+          x: 0
+        },
         to: {
           x: this.position
         }
@@ -44,12 +48,15 @@ class Slider extends PureComponent {
 
     let onComplete
 
-    if (enterEl.parentNode.getAttribute('data-slide-role') === 'clone') {
+    if (enter.index === children.length - 1 || enter.index === (children.length * 2)) {
       if (offset === 1) {
         onComplete = () => {
           moveElement({
             el: this.slider,
             skipAnim: true,
+            from: {
+              x: this.position
+            },
             to: {
               x: this.headPosition
             }
@@ -62,6 +69,9 @@ class Slider extends PureComponent {
           moveElement({
             el: this.slider,
             skipAnim: true,
+            from: {
+              x: this.position
+            },
             to: {
               x: this.tailPosition
             }
@@ -72,25 +82,30 @@ class Slider extends PureComponent {
       }
     }
 
-    this.position = offset === 1
-      ? this.position - size
-      : this.position + size
+    const nextPos = offset === 1 ? this.position - size : this.position + size
 
-    moveElement({
+    if (this.tween) {
+      this.tween.stop()
+    }
+
+    this.tween = moveElement({
       el: this.slider,
-      to: {
+      duration: 200,
+      from: {
         x: this.position
+      },
+      to: {
+        x: nextPos
       },
       onComplete
     })
+
+    this.position = nextPos
   }
 
   buildSlide (child, role) {
     return (
-      <div
-        data-slide-role={role}
-        className={css(styles.slide)}
-      >
+      <div className={css(styles.slide)}>
         {child}
       </div>
     )
@@ -98,9 +113,9 @@ class Slider extends PureComponent {
 
   buildSlides (children) {
     return [
-      React.Children.map(children, (child, i) => this.buildSlide(child, 'clone')),
       React.Children.map(children, (child, i) => this.buildSlide(child)),
-      React.Children.map(children, (child, i) => this.buildSlide(child, 'clone'))
+      React.Children.map(children, (child, i) => this.buildSlide(child)),
+      React.Children.map(children, (child, i) => this.buildSlide(child))
     ]
   }
 
@@ -123,8 +138,7 @@ class Slider extends PureComponent {
 const styles = StyleSheet.create({
   slider: {
     whiteSpace: 'nowrap',
-    backfaceVisibility: 'hidden',
-    perspective: 1000
+    position: 'relative'
   },
   slide: {
     display: 'inline-block',

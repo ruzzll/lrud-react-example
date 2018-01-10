@@ -10,7 +10,7 @@
       {
         "targets": {
           "browsers": [
-            "last 2 versions"
+            "since 2012"
           ]
         },
         "debug": true,

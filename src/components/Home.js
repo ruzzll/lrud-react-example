@@ -4,23 +4,25 @@ import Slider from './Slider'
 import Card from './Card'
 import Focusable from './Focusable'
 
-const bundle = {
+const bundle1 = {
+  id: 'box-sets-bundle',
+  title: 'Box Sets',
   items: [{
-    imgURL: '//source.unsplash.com/random/$recipe?bust=1'
+    imgURL: '//ichef.bbci.co.uk/images/ic/$recipe/p05rtgfm.jpg'
   }, {
-    imgURL: '//source.unsplash.com/random/$recipe?bust=2'
+    imgURL: '//ichef.bbci.co.uk/images/ic/$recipe/p05rth3n.jpg'
   }, {
-    imgURL: '//source.unsplash.com/random/$recipe?bust=3'
+    imgURL: '//ichef.bbci.co.uk/images/ic/$recipe/p05r7g08.jpg'
   }, {
-    imgURL: '//source.unsplash.com/random/$recipe?bust=4'
+    imgURL: '//ichef.bbci.co.uk/images/ic/$recipe/p05r775t.jpg'
   }, {
-    imgURL: '//source.unsplash.com/random/$recipe?bust=5'
+    imgURL: '//ichef.bbci.co.uk/images/ic/$recipe/p05rtfwy.jpg'
+  }, {
+    imgURL: '//ichef.bbci.co.uk/images/ic/$recipe/p05r7547.jpg'
   }]
 }
 
-const bundles = [
-  { id: 'bundle-1', title: 'First Bundle', ...bundle }
-]
+const bundles = [ bundle1 ]
 
 class Home extends PureComponent {
   render () {
@@ -60,9 +62,9 @@ const styles = StyleSheet.create({
   },
   focus: {
     position: 'absolute',
-    height: '8em',
-    width: '14em',
-    bottom: '4.5em',
+    height: '7.6em',
+    width: '13.6em',
+    bottom: '4.9em',
     left: '4.8em',
     border: '0.2em solid white'
   },

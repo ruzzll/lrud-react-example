@@ -23,6 +23,6 @@ document.onkeydown = throttle((event) => {
     navigation.handleKeyEvent(event)
     event.preventDefault()
   }
-}, 200)
+}, 210)
 
 export default navigation

@@ -6,9 +6,9 @@ import Focusable from './Focusable'
 import { resolution } from '../common/device'
 
 const recipes = {
-  540: '210x120',
-  720: '280x160',
-  1080: '420x240'
+  540: '203x114',
+  720: '272x153',
+  1080: '406x228'
 }
 
 const imgSrc = (src) => src.replace('$recipe', recipes[resolution])
@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
     display: 'inline-block',
     verticalAlign: 'top',
     marginRight: '0.5em',
-    height: '8em',
-    width: '14em'
+    height: '7.6em',
+    width: '13.6em'
   }
 })
 

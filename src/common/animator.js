@@ -1,36 +1,42 @@
-const vendorPrefixes = [ '-webkit-', '-moz-', '-o-' ]
+const TWEEN = require('tween.js')
 
-const trainsitionEndEvents = [
-  'webkitTransitionEnd',
-  'oTransitionEnd',
-  'otransitionend',
-  'transitionend'
-]
-
-const setProperty = (el, prop, val) =>
-  vendorPrefixes.forEach((prefix) => el.style.setProperty(prefix + prop, val))
-
-const addTransitionEndListener = (el, callback) =>
-  trainsitionEndEvents.forEach((event) => el.addEventListener(event, callback))
-
-const removeTransitionEndListener = (el, callback) =>
-  trainsitionEndEvents.forEach((event) => el.removeEventListener(event, callback))
-
-export const moveElement = (options) => {
-  const { el, easing = 'linear', duration = 200, skipAnim = false, to = {} } = options
-  const x = to.x || 0
-  const y = to.y || 0
-
-  const onComplete = () => {
-    setProperty(el, 'transition', '')
-    removeTransitionEndListener(el, onComplete)
-    options.onComplete && options.onComplete()
-  }
-
-  if (!skipAnim) {
-    setProperty(el, 'transition', `transform ${duration}ms ${easing}`)
-    addTransitionEndListener(el, onComplete)
-  }
-
-  setProperty(el, 'transform', 'translate3d(' + x + 'px, ' + y + 'px, 0)')
+const setProperty = (el, prop, value = '') => {
+  el.style.setProperty(`-webkit-${prop}`, value)
+  el.style.setProperty(`-ms-${prop}`, value)
+  el.style.setProperty(prop, value)
 }
+
+function tween (options) {
+  const { el, duration = 200, from = {}, to = {}, onComplete, skipAnim } = options
+
+  if (skipAnim) {
+    const x = to.x || 0
+    const y = to.y || 0
+
+    return setProperty(el, 'transform', `translate(${x}px, ${y}px)`)
+  }
+
+  const tween = new TWEEN.Tween(from)
+    .to(to, duration)
+    .onUpdate(function () {
+      const x = this.x || 0
+      const y = this.y || 0
+
+      setProperty(el, 'transform', `translate(${x}px, ${y}px)`)
+    })
+    .onComplete(() => {
+      onComplete && onComplete()
+    })
+
+  const animate = (time) => {
+    window.requestAnimationFrame(animate)
+    TWEEN.update(time)
+  }
+
+  tween.start()
+  animate()
+
+  return tween
+}
+
+export const moveElement = (options) => tween(options)
