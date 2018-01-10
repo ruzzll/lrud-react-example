@@ -3,26 +3,7 @@ import { StyleSheet, css } from 'aphrodite'
 import Slider from './Slider'
 import Card from './Card'
 import Focusable from './Focusable'
-
-const bundle1 = {
-  id: 'box-sets-bundle',
-  title: 'Box Sets',
-  items: [{
-    imgURL: '//ichef.bbci.co.uk/images/ic/$recipe/p05rtgfm.jpg'
-  }, {
-    imgURL: '//ichef.bbci.co.uk/images/ic/$recipe/p05rth3n.jpg'
-  }, {
-    imgURL: '//ichef.bbci.co.uk/images/ic/$recipe/p05r7g08.jpg'
-  }, {
-    imgURL: '//ichef.bbci.co.uk/images/ic/$recipe/p05r775t.jpg'
-  }, {
-    imgURL: '//ichef.bbci.co.uk/images/ic/$recipe/p05rtfwy.jpg'
-  }, {
-    imgURL: '//ichef.bbci.co.uk/images/ic/$recipe/p05r7547.jpg'
-  }]
-}
-
-const bundles = [ bundle1 ]
+import bundles from '../feeds/bundles.json'
 
 class Home extends PureComponent {
   render () {
