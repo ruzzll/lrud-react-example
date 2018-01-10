@@ -18,7 +18,7 @@ class Card extends PureComponent {
     const { className, imgURL } = this.props
 
     return (
-      <Focusable className={classNames('Card', className, css(styles.card))}>
+      <Focusable className={classNames(className, css(styles.card))}>
         <img src={imgSrc(imgURL)} />
       </Focusable>
     )

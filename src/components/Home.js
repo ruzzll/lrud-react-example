@@ -20,18 +20,14 @@ const bundle = {
 
 const bundles = [
   { id: 'bundle-1', title: 'First Bundle', ...bundle },
-  { id: 'bundle-2', title: 'Second Bundle', ...bundle },
-  { id: 'bundle-3', title: 'Third Bundle', ...bundle }
+  { id: 'bundle-2', title: 'Second Bundle', ...bundle }
 ]
 
 class Home extends PureComponent {
   render () {
     return (
       <div>
-        <Slider
-          className={css(styles.bundles)}
-          orientation='vertical'
-        >
+        <div className={css(styles.bundles)}>
           {bundles.map((bundle, i) => (
             <Focusable key={i}>
               <h3 className={css(styles.title)}>
@@ -47,7 +43,7 @@ class Home extends PureComponent {
               </Slider>
             </Focusable>
           ))}
-        </Slider>
+        </div>
         <div className={css(styles.focus)} />
       </div>
     )

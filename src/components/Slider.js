@@ -2,52 +2,84 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import { StyleSheet, css } from 'aphrodite'
+import { getComputedWidth } from '../common/device'
 import Focusable from './Focusable'
-
-const int = (n) => parseInt(n, 10)
-const getComputedWidth = ({ width, marginLeft, marginRight }) => int(width) + int(marginLeft) + int(marginRight)
-const getComputedHeight = ({ height, marginTop, marginBottom }) => int(height) + int(marginTop) + int(marginBottom)
-const isRightDown = ({ orientation: or, offset: off }) => (or === 'horizontal' && off === 1) || (or === 'vertical' && off === 1)
+import navigation from '../common/navigation'
+import { moveElement } from '../common/animator'
 
 class Slider extends PureComponent {
-  state = {
-    position: 0
+  position = 0
+  sliderEl = null
+
+  componentDidMount () {
+    const { id, children } = this.props
+
+    this.sliderEl = document.getElementById(id)
+
+    setTimeout(() => {
+      const slideWidth = getComputedWidth(this.sliderEl.children[0])
+      const activeIndex = children.length
+
+      navigation.setActiveIndex(id, activeIndex)
+      this.position = -(slideWidth * activeIndex)
+
+      moveElement({
+        el: this.sliderEl,
+        skipAnim: true,
+        to: {
+          x: this.position
+        }
+      })
+    })
   }
 
   handleMove = (event) => {
-    const { orientation, enter, leave } = event
-    const { position } = this.state
+    const { offset, enter, leave } = event
+    const id = (offset === 1 ? enter : leave).id
+    const size = getComputedWidth(document.getElementById(id))
 
-    const elementId = (isRightDown(event) ? enter : leave).id
-    const element = document.getElementById(elementId)
-    const style = window.getComputedStyle(element)
-    const size = orientation === 'horizontal' ? getComputedWidth(style) : getComputedHeight(style)
+    this.position = offset === 1
+      ? this.position - size
+      : this.position + size
 
-    this.setState({
-      position: isRightDown(event) ? position - size : position + size
+    moveElement({
+      el: this.sliderEl,
+      to: {
+        x: this.position
+      }
     })
+  }
+
+  buildSlide (child, role) {
+    return (
+      <div
+        data-slide-role={role}
+        className={css(styles.slide)}
+      >
+        {child}
+      </div>
+    )
+  }
+
+  buildSlides (children) {
+    return [
+      React.Children.map(children, (child, i) => this.buildSlide(child, 'clone')),
+      React.Children.map(children, (child, i) => this.buildSlide(child)),
+      React.Children.map(children, (child, i) => this.buildSlide(child, 'clone'))
+    ]
   }
 
   render () {
     const { id, className, orientation, children } = this.props
-    const { position } = this.state
-    const axis = orientation === 'horizontal' ? 'X' : 'Y'
-    const transform = `translate${axis}(${position}px)`
 
     return (
       <Focusable
         id={id}
-        className={classNames('Slider', className, css(styles.slider))}
+        className={classNames(className, css(styles.slider))}
         orientation={orientation}
         onMove={this.handleMove}
-        style={{
-          transform,
-          WebkitTransform: transform,
-          MozTransform: transform,
-          OTransform: transform
-        }}
       >
-        {children}
+        {this.buildSlides(children)}
       </Focusable>
     )
   }
@@ -56,14 +88,22 @@ class Slider extends PureComponent {
 const styles = StyleSheet.create({
   slider: {
     whiteSpace: 'nowrap',
-    transition: 'all 200ms linear'
+    backfaceVisibility: 'hidden',
+    perspective: 1000
+  },
+  slide: {
+    display: 'inline-block',
+    verticalAlign: 'top'
   }
 })
 
 Slider.propTypes = {
   id: PropTypes.string,
   className: PropTypes.string,
-  orientation: PropTypes.oneOf([ 'vertical', 'horizontal' ]),
+  orientation: PropTypes.oneOf([
+    'vertical',
+    'horizontal'
+  ]),
   children: PropTypes.any
 }
 
