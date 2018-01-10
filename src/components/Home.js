@@ -22,9 +22,15 @@ class Home extends PureComponent {
     return (
       <div>
         <div className={css(styles.episode)}>
-          <h2>{episode.title}</h2>
-          <div>{episode.subtitle}</div>
-          <div>{episode.description}</div>
+          <div className={css(styles.episodeTitle)}>
+            {episode.title}
+          </div>
+          <div className={css(styles.episodeSubtitle)}>
+            {episode.subtitle}
+          </div>
+          <div className={css(styles.episodeDesc)}>
+            {episode.description}
+          </div>
         </div>
         <div className={css(styles.bundles)}>
           {bundles.map((bundle, i) => (
@@ -73,8 +79,21 @@ const styles = StyleSheet.create({
     padding: '1em 0 0.5em 0'
   },
   episode: {
-    padding: '5em',
-    width: '20em'
+    padding: '2.5em 5em',
+    width: '22em'
+  },
+  episodeTitle: {
+    fontSize: '1.5em',
+    marginBottom: '0.2em'
+  },
+  episodeSubtitle: {
+    fontSize: '0.8em',
+    color: '#b2b7c4'
+  },
+  episodeDesc: {
+    fontSize: '0.9em',
+    color: '#b2b7c4',
+    marginTop: '0.5em'
   }
 })
 
