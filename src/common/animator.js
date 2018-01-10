@@ -1,4 +1,4 @@
-const TWEEN = require('tween.js')
+import TWEEN from 'tween.js'
 
 const setProperty = (el, prop, value = '') => {
   el.style.setProperty(`-webkit-${prop}`, value)
@@ -8,6 +8,7 @@ const setProperty = (el, prop, value = '') => {
 
 function tween (options) {
   const { el, duration = 200, from = {}, to = {}, onComplete, skipAnim } = options
+  let rafid = null
 
   if (skipAnim) {
     const x = to.x || 0
@@ -24,12 +25,16 @@ function tween (options) {
 
       setProperty(el, 'transform', `translate(${x}px, ${y}px)`)
     })
+    .onStop(() => {
+      window.cancelAnimationFrame(rafid)
+    })
     .onComplete(() => {
+      window.cancelAnimationFrame(rafid)
       onComplete && onComplete()
     })
 
   const animate = (time) => {
-    window.requestAnimationFrame(animate)
+    rafid = window.requestAnimationFrame(animate)
     TWEEN.update(time)
   }
 
