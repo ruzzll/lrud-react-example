@@ -6,8 +6,7 @@ const setProperty = (el, prop, value = '') => {
   el.style.setProperty(prop, value)
 }
 
-function tween (options) {
-  const { el, duration = 200, from = {}, to = {}, onComplete, skipAnim } = options
+export const moveElement = ({ el, duration = 200, from = {}, to = {}, onComplete, skipAnim }) => {
   let rafid = null
 
   if (skipAnim) {
@@ -43,5 +42,3 @@ function tween (options) {
 
   return tween
 }
-
-export const moveElement = (options) => tween(options)
