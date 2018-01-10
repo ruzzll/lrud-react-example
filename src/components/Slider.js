@@ -9,22 +9,25 @@ import { moveElement } from '../common/animator'
 
 class Slider extends PureComponent {
   position = 0
-  sliderEl = null
+  headPosition = 0
+  slider = null
 
   componentDidMount () {
     const { id, children } = this.props
 
-    this.sliderEl = document.getElementById(id)
+    this.slider = document.getElementById(id)
 
     setTimeout(() => {
-      const slideWidth = getComputedWidth(this.sliderEl.children[0])
+      const slideWidth = getComputedWidth(this.slider.children[0])
       const activeIndex = children.length
 
       navigation.setActiveIndex(id, activeIndex)
-      this.position = -(slideWidth * activeIndex)
+
+      this.headPosition = this.position = -(slideWidth * activeIndex)
+      this.tailPosition = (this.headPosition * 2) + (slideWidth)
 
       moveElement({
-        el: this.sliderEl,
+        el: this.slider,
         skipAnim: true,
         to: {
           x: this.position
@@ -34,19 +37,51 @@ class Slider extends PureComponent {
   }
 
   handleMove = (event) => {
-    const { offset, enter, leave } = event
-    const id = (offset === 1 ? enter : leave).id
-    const size = getComputedWidth(document.getElementById(id))
+    const { id, children } = this.props
+    const { offset, enter } = event
+    const enterEl = document.getElementById(enter.id)
+    const size = getComputedWidth(enterEl)
+
+    let onComplete
+
+    if (enterEl.parentNode.getAttribute('data-slide-role') === 'clone') {
+      if (offset === 1) {
+        onComplete = () => {
+          moveElement({
+            el: this.slider,
+            skipAnim: true,
+            to: {
+              x: this.headPosition
+            }
+          })
+          this.position = this.headPosition
+          navigation.setActiveIndex(id, children.length)
+        }
+      } else {
+        onComplete = () => {
+          moveElement({
+            el: this.slider,
+            skipAnim: true,
+            to: {
+              x: this.tailPosition
+            }
+          })
+          this.position = this.tailPosition
+          navigation.setActiveIndex(id, (children.length * 2) - 1)
+        }
+      }
+    }
 
     this.position = offset === 1
       ? this.position - size
       : this.position + size
 
     moveElement({
-      el: this.sliderEl,
+      el: this.slider,
       to: {
         x: this.position
-      }
+      },
+      onComplete
     })
   }
 

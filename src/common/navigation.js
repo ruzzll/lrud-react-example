@@ -1,4 +1,5 @@
 import Lrud from 'lrud'
+import { throttle } from 'lodash'
 
 const navigation = new Lrud()
 
@@ -17,11 +18,11 @@ navigation.setActiveIndex = (id, index) => {
   }
 }
 
-document.onkeydown = function (event) {
+document.onkeydown = throttle((event) => {
   if (Lrud.KEY_CODES[event.keyCode]) {
     navigation.handleKeyEvent(event)
     event.preventDefault()
   }
-}
+}, 200)
 
 export default navigation

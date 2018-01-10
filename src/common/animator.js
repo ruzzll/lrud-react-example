@@ -16,13 +16,15 @@ const addTransitionEndListener = (el, callback) =>
 const removeTransitionEndListener = (el, callback) =>
   trainsitionEndEvents.forEach((event) => el.removeEventListener(event, callback))
 
-export const moveElement = ({ el, easing = 'linear', duration = 200, skipAnim = false, to = {} }) => {
+export const moveElement = (options) => {
+  const { el, easing = 'linear', duration = 200, skipAnim = false, to = {} } = options
   const x = to.x || 0
   const y = to.y || 0
 
   const onComplete = () => {
     setProperty(el, 'transition', '')
     removeTransitionEndListener(el, onComplete)
+    options.onComplete && options.onComplete()
   }
 
   if (!skipAnim) {
