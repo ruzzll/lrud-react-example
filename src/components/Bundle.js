@@ -7,9 +7,10 @@ import Focusable from './Focusable'
 import navigation from '../common/navigation'
 import { moveElement } from '../common/animator'
 
-class Slider extends PureComponent {
+class Bundle extends PureComponent {
   position = 0
   headPosition = 0
+  tailPosition = 0
   slider = null
   tween = null
 
@@ -149,7 +150,7 @@ const styles = StyleSheet.create({
   }
 })
 
-Slider.propTypes = {
+Bundle.propTypes = {
   id: PropTypes.string,
   className: PropTypes.string,
   orientation: PropTypes.oneOf([
@@ -159,8 +160,8 @@ Slider.propTypes = {
   children: PropTypes.any
 }
 
-Slider.defaultProps = {
+Bundle.defaultProps = {
   orientation: 'horizontal'
 }
 
-export default Slider
+export default Bundle
