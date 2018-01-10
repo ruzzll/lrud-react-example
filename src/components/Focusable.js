@@ -23,7 +23,7 @@ class Focusable extends PureComponent {
   }
 
   render () {
-    const { parent, type, orientation, onFocus, onBlur, onSelect, onMove } = this.props
+    const { parent, type, orientation, onFocus, onBlur, onSelect, onMove, data } = this.props
 
     navigation.register(this.id, {
       parent: parent || this.context.parent,
@@ -31,7 +31,8 @@ class Focusable extends PureComponent {
       onFocus,
       onBlur,
       onSelect,
-      onMove
+      onMove,
+      data
     })
 
     return React.createElement(type, {
@@ -56,7 +57,8 @@ Focusable.propTypes = {
   onFocus: PropTypes.func,
   onBlur: PropTypes.func,
   onSelect: PropTypes.func,
-  onMove: PropTypes.func
+  onMove: PropTypes.func,
+  data: PropTypes.object
 }
 
 Focusable.defaultProps = {

@@ -6,16 +6,36 @@ import Focusable from './Focusable'
 import bundles from '../feeds/bundles.json'
 
 class Home extends PureComponent {
+  state = {
+    episode: {}
+  }
+
+  handleItemFocus = ({ data }) => {
+    this.setState({
+      episode: data
+    })
+  }
+
   render () {
+    const { episode } = this.state
+
     return (
       <div>
+        <div className={css(styles.episode)}>
+          <h2>{episode.title}</h2>
+          <div>{episode.subtitle}</div>
+          <div>{episode.description}</div>
+        </div>
         <div className={css(styles.bundles)}>
           {bundles.map((bundle, i) => (
             <Focusable key={i}>
-              <h3 className={css(styles.title)}>
+              <div className={css(styles.title)}>
                 {bundle.title}
-              </h3>
-              <Bundle id={bundle.id}>
+              </div>
+              <Bundle
+                id={bundle.id}
+                onItemFocus={this.handleItemFocus}
+              >
                 {bundle.items.map((item, i) => (
                   <Card
                     key={i}
@@ -51,6 +71,10 @@ const styles = StyleSheet.create({
   },
   title: {
     padding: '1em 0 0.5em 0'
+  },
+  episode: {
+    padding: '5em',
+    width: '20em'
   }
 })
 

@@ -10,6 +10,13 @@ navigation.on('move', (event) => {
   }
 })
 
+navigation.on('focus', (id) => {
+  const node = navigation.nodes[id]
+  if (node && node.onFocus) {
+    node.onFocus(node)
+  }
+})
+
 // TODO: Implement in Lrud
 navigation.setActiveIndex = (id, index) => {
   const node = navigation.nodes[id]

@@ -26,6 +26,7 @@ if (process.env.NODE_ENV === 'production') {
 module.exports = {
   entry: [
     './node_modules/reset-css/reset.css',
+    './src/main.css',
     './src/main.js'
   ],
   output: {

@@ -105,12 +105,14 @@ class Bundle extends PureComponent {
   }
 
   buildSlide (child, role) {
+    const { onItemFocus } = this.props
+
     return (
       <div
         data-role={role}
         className={css(styles.slide)}
       >
-        {child}
+        {React.cloneElement(child, { onFocus: onItemFocus })}
       </div>
     )
   }
@@ -157,7 +159,8 @@ Bundle.propTypes = {
     'vertical',
     'horizontal'
   ]),
-  children: PropTypes.any
+  children: PropTypes.any,
+  onItemFocus: PropTypes.func.isRequired
 }
 
 Bundle.defaultProps = {

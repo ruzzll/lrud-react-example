@@ -15,10 +15,15 @@ const imgSrc = (src) => src.replace('$recipe', recipes[resolution])
 
 class Card extends PureComponent {
   render () {
-    const { className, imgURL } = this.props
+    const { className, id, imgURL, title, subtitle, description, onFocus } = this.props
+    const data = { id, title, subtitle, description }
 
     return (
-      <Focusable className={classNames(className, css(styles.card))}>
+      <Focusable
+        className={classNames(className, css(styles.card))}
+        onFocus={onFocus}
+        data={data}
+      >
         <img src={imgSrc(imgURL)} />
       </Focusable>
     )
@@ -37,7 +42,12 @@ const styles = StyleSheet.create({
 
 Card.propTypes = {
   className: PropTypes.string,
-  imgURL: PropTypes.string.isRequired
+  id: PropTypes.string.isRequired,
+  imgURL: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  subtitle: PropTypes.string,
+  description: PropTypes.string,
+  onFocus: PropTypes.func
 }
 
 export default Card
