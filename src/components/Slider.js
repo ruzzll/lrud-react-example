@@ -48,7 +48,7 @@ class Slider extends PureComponent {
 
     let onComplete
 
-    if (enter.index === children.length - 1 || enter.index === (children.length * 2)) {
+    if (enterEl.parentNode.dataset.role === 'clone') {
       if (offset === 1) {
         onComplete = () => {
           moveElement({
@@ -105,7 +105,10 @@ class Slider extends PureComponent {
 
   buildSlide (child, role) {
     return (
-      <div className={css(styles.slide)}>
+      <div
+        data-role={role}
+        className={css(styles.slide)}
+      >
         {child}
       </div>
     )
@@ -113,9 +116,9 @@ class Slider extends PureComponent {
 
   buildSlides (children) {
     return [
+      React.Children.map(children, (child, i) => this.buildSlide(child, 'clone')),
       React.Children.map(children, (child, i) => this.buildSlide(child)),
-      React.Children.map(children, (child, i) => this.buildSlide(child)),
-      React.Children.map(children, (child, i) => this.buildSlide(child))
+      React.Children.map(children, (child, i) => this.buildSlide(child, 'clone'))
     ]
   }
 
