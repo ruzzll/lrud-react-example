@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import { StyleSheet, css } from 'aphrodite'
+import { once, debounce } from 'lodash'
 import { getComputedWidth } from '../common/device'
 import Focusable from './Focusable'
 import navigation from '../common/navigation'
@@ -14,35 +15,77 @@ class Bundle extends PureComponent {
   slider = null
   tween = null
 
+  constructor (props) {
+    super(props)
+
+    this.onceItemFocus = once(props.onItemFocus)
+    this.onItemFocus = debounce(props.onItemFocus, 750, { leading: true })
+  }
+
   componentDidMount () {
+    this.slider = document.getElementById(this.props.id)
+    setTimeout(this.alignInitial.bind(this))
+  }
+
+  alignInitial () {
     const { id, children } = this.props
+    const slideWidth = getComputedWidth(this.slider.children[0])
+    const activeIndex = children.length
 
-    this.slider = document.getElementById(id)
+    navigation.setActiveIndex(id, activeIndex)
 
-    setTimeout(() => {
-      const slideWidth = getComputedWidth(this.slider.children[0])
-      const activeIndex = children.length
+    this.headPosition = this.position = -(slideWidth * activeIndex)
+    this.tailPosition = (this.headPosition * 2) + (slideWidth)
 
-      navigation.setActiveIndex(id, activeIndex)
-
-      this.headPosition = this.position = -(slideWidth * activeIndex)
-      this.tailPosition = (this.headPosition * 2) + (slideWidth)
-
-      moveElement({
-        el: this.slider,
-        skipAnim: true,
-        from: {
-          x: 0
-        },
-        to: {
-          x: this.position
-        }
-      })
+    moveElement({
+      el: this.slider,
+      skipAnim: true,
+      from: {
+        x: 0
+      },
+      to: {
+        x: this.position
+      }
     })
   }
 
-  handleMove = (event) => {
+  alignHead () {
     const { id, children } = this.props
+
+    moveElement({
+      el: this.slider,
+      skipAnim: true,
+      from: {
+        x: this.position
+      },
+      to: {
+        x: this.headPosition
+      }
+    })
+
+    this.position = this.headPosition
+    navigation.setActiveIndex(id, children.length)
+  }
+
+  alignTail () {
+    const { id, children } = this.props
+
+    moveElement({
+      el: this.slider,
+      skipAnim: true,
+      from: {
+        x: this.position
+      },
+      to: {
+        x: this.tailPosition
+      }
+    })
+
+    this.position = this.tailPosition
+    navigation.setActiveIndex(id, (children.length * 2) - 1)
+  }
+
+  handleMove = (event) => {
     const { offset, enter } = event
     const enterEl = document.getElementById(enter.id)
     const size = getComputedWidth(enterEl)
@@ -51,77 +94,50 @@ class Bundle extends PureComponent {
 
     if (enterEl.parentNode.dataset.role === 'clone') {
       if (offset === 1) {
-        onComplete = () => {
-          moveElement({
-            el: this.slider,
-            skipAnim: true,
-            from: {
-              x: this.position
-            },
-            to: {
-              x: this.headPosition
-            }
-          })
-          this.position = this.headPosition
-          navigation.setActiveIndex(id, children.length)
-        }
+        onComplete = this.alignHead.bind(this)
       } else {
-        onComplete = () => {
-          moveElement({
-            el: this.slider,
-            skipAnim: true,
-            from: {
-              x: this.position
-            },
-            to: {
-              x: this.tailPosition
-            }
-          })
-          this.position = this.tailPosition
-          navigation.setActiveIndex(id, (children.length * 2) - 1)
-        }
+        onComplete = this.alignTail.bind(this)
       }
     }
 
+    const currPos = this.position
     const nextPos = offset === 1 ? this.position - size : this.position + size
 
-    if (this.tween) {
-      this.tween.stop()
-    }
-
+    this.twee && this.tween.stop()
     this.tween = moveElement({
       el: this.slider,
       duration: 200,
       from: {
-        x: this.position
+        x: currPos
       },
       to: {
         x: nextPos
       },
-      onComplete
+      onComplete: () => {
+        onComplete && onComplete()
+        this.onItemFocus(navigation.nodes[enter.id])
+      }
     })
 
     this.position = nextPos
   }
 
-  buildSlide (child, role) {
-    const { onItemFocus } = this.props
-
+  buildSlide (child, { role, onFocus } = {}) {
     return (
       <div
         data-role={role}
         className={css(styles.slide)}
       >
-        {React.cloneElement(child, { onFocus: onItemFocus })}
+        {React.cloneElement(child, { onFocus })}
       </div>
     )
   }
 
   buildSlides (children) {
     return [
-      React.Children.map(children, (child, i) => this.buildSlide(child, 'clone')),
+      React.Children.map(children, (child, i) => this.buildSlide(child, { role: 'clone', onFocus: this.onceItemFocus })),
       React.Children.map(children, (child, i) => this.buildSlide(child)),
-      React.Children.map(children, (child, i) => this.buildSlide(child, 'clone'))
+      React.Children.map(children, (child, i) => this.buildSlide(child, { role: 'clone' }))
     ]
   }
 
