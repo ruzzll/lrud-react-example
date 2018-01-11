@@ -2,7 +2,8 @@
   "plugins": [
     "transform-object-rest-spread",
     "transform-class-properties",
-    "transform-react-jsx"
+    "transform-react-jsx",
+    "lodash"
   ],
   "presets": [
     [
@@ -10,12 +11,13 @@
       {
         "targets": {
           "browsers": [
-            "since 2012"
+            "last 2 versions"
           ]
         },
-        "debug": true,
+        "debug": false,
         "modules": false,
-        "loose": true
+        "loose": true,
+        "useBuiltIns": "usage"
       }
     ]
   ]

@@ -3,22 +3,27 @@ const webpack = require('webpack')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 
 let plugins = [
   new CleanWebpackPlugin([ 'public' ]),
   new HtmlWebpackPlugin({
     template: './src/index.html'
-  })
+  }),
+  new BundleAnalyzerPlugin()
 ]
 
 if (process.env.NODE_ENV === 'production') {
   plugins = [
     ...plugins,
-    new UglifyJSPlugin({
-      sourceMap: true
-    }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production')
+    }),
+    new LodashModuleReplacementPlugin(),
+    new webpack.optimize.ModuleConcatenationPlugin(),
+    new UglifyJSPlugin({
+      sourceMap: true
     })
   ]
 }
