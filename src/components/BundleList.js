@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import Focusable from './Focusable'
 import { getComputedHeight } from '../common/device'
-import { moveElement } from '../common/animator'
+import { fade, moveElement } from '../common/animator'
 
 const id = 'bundle-list'
 
@@ -22,9 +22,24 @@ class BundleList extends PureComponent {
     const currPos = this.position
     const nextPos = offset === 1 ? this.position - size : this.position + size
 
-    leaveElement.classList.add('fade-out')
+    if (offset === 1) {
+      fade({
+        el: leaveElement,
+        duration: 350,
+        from: 1,
+        to: 0
+      })
+    } else {
+      fade({
+        el: enterElement,
+        duration: 350,
+        from: 0,
+        to: 1
+      })
+    }
 
-    moveElement({
+    this.tween && this.tween.stop()
+    this.tween = moveElement({
       el: this.slider,
       duration: 350,
       from: {

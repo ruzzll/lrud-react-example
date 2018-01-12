@@ -7,9 +7,9 @@ const setProperty = (el, prop, value = '') => {
 }
 
 export const moveElement = ({ el, duration = 200, from = {}, to = {}, onComplete, skipAnim }) => {
-  let rafid = null
-
   if (!el) throw new Error('Invalid element')
+
+  let rafid = null
 
   if (skipAnim) {
     const x = to.x || 0
@@ -25,6 +25,32 @@ export const moveElement = ({ el, duration = 200, from = {}, to = {}, onComplete
       const y = this.y || 0
 
       setProperty(el, 'transform', `translate(${x}px, ${y}px)`)
+    })
+    .onComplete(() => {
+      window.cancelAnimationFrame(rafid)
+      onComplete && onComplete()
+    })
+
+  const animate = (time) => {
+    rafid = window.requestAnimationFrame(animate)
+    TWEEN.update(time)
+  }
+
+  tween.start()
+  animate()
+
+  return tween
+}
+
+export const fade = ({ el, duration = 200, from = 1, to = 0, onComplete }) => {
+  if (!el) throw new Error('Invalid element')
+
+  let rafid = null
+
+  const tween = new TWEEN.Tween({ opacity: from })
+    .to({ opacity: to }, duration)
+    .onUpdate(function (value) {
+      el.style.opacity = this.opacity
     })
     .onComplete(() => {
       window.cancelAnimationFrame(rafid)
