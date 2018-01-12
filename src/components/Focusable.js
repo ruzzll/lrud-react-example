@@ -1,9 +1,19 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { omit } from 'lodash'
+import { pick, omit } from 'lodash'
 import navigation from '../common/navigation'
 
 let autoid = 0
+
+const navigationProps = [
+  'type',
+  'orientation',
+  'onFocus',
+  'onBlur',
+  'onSelect',
+  'onMove',
+  'data'
+]
 
 class Focusable extends PureComponent {
   constructor (props) {
@@ -23,42 +33,21 @@ class Focusable extends PureComponent {
   }
 
   render () {
-    const { parent, type, orientation, onFocus, onBlur, onSelect, onMove, data } = this.props
-
     navigation.register(this.id, {
-      parent: parent || this.context.parent,
-      orientation,
-      onFocus,
-      onBlur,
-      onSelect,
-      onMove,
-      data
+      parent: this.context.parent,
+      ...pick(this.props, navigationProps)
     })
 
-    return React.createElement(type, {
-      ...omit(this.props, [
-        'type',
-        'orientation',
-        'onFocus',
-        'onBlur',
-        'onSelect',
-        'onMove'
-      ]),
-      id: this.id
+    return React.createElement(this.props.type, {
+      id: this.id,
+      ...omit(this.props, navigationProps)
     })
   }
 }
 
 Focusable.propTypes = {
   id: PropTypes.string,
-  parent: PropTypes.string,
-  type: PropTypes.string,
-  orientation: PropTypes.oneOf([ 'vertical', 'horizontal' ]),
-  onFocus: PropTypes.func,
-  onBlur: PropTypes.func,
-  onSelect: PropTypes.func,
-  onMove: PropTypes.func,
-  data: PropTypes.object
+  type: PropTypes.string
 }
 
 Focusable.defaultProps = {
