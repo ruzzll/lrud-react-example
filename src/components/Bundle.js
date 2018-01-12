@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import { StyleSheet, css } from 'aphrodite'
-import { once, debounce } from 'lodash'
 import Focusable from './Focusable'
 import navigation from '../common/navigation'
 import { getComputedWidth } from '../common/device'
@@ -14,13 +13,6 @@ class Bundle extends PureComponent {
   tailPosition = 0
   slider = null
   tween = null
-
-  constructor (props) {
-    super(props)
-
-    this.onceItemFocus = once(props.onItemFocus)
-    this.onItemFocus = debounce(props.onItemFocus, 750, { leading: true })
-  }
 
   componentDidMount () {
     this.slider = document.getElementById(this.props.id)
@@ -113,36 +105,37 @@ class Bundle extends PureComponent {
       to: {
         x: nextPos
       },
-      onComplete: () => {
-        onComplete && onComplete()
-        this.onItemFocus(navigation.nodes[enter.id])
-      }
+      onComplete
     })
 
     this.position = nextPos
   }
 
-  buildSlide (child, { role, onFocus } = {}) {
+  buildSlide (child, role) {
     return (
       <div
         data-role={role}
         className={css(styles.slide)}
       >
-        {React.cloneElement(child, { onFocus })}
+        {React.cloneElement(child)}
       </div>
     )
   }
 
   buildSlides (children) {
     return [
-      React.Children.map(children, (child, i) => this.buildSlide(child, { role: 'clone', onFocus: this.onceItemFocus })),
+      React.Children.map(children, (child, i) => this.buildSlide(child, 'clone')),
       React.Children.map(children, (child, i) => this.buildSlide(child)),
-      React.Children.map(children, (child, i) => this.buildSlide(child, { role: 'clone' }))
+      React.Children.map(children, (child, i) => this.buildSlide(child, 'clone'))
     ]
   }
 
   render () {
     const { id, className, orientation, children } = this.props
+
+    if (!this.slides) {
+      this.slides = this.buildSlides(children)
+    }
 
     return (
       <Focusable
@@ -151,7 +144,7 @@ class Bundle extends PureComponent {
         orientation={orientation}
         onMove={this.handleMove}
       >
-        {this.buildSlides(children)}
+        {this.slides}
       </Focusable>
     )
   }
@@ -175,8 +168,7 @@ Bundle.propTypes = {
     'vertical',
     'horizontal'
   ]),
-  children: PropTypes.any,
-  onItemFocus: PropTypes.func.isRequired
+  children: PropTypes.any
 }
 
 Bundle.defaultProps = {

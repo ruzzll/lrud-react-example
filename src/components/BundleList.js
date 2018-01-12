@@ -16,13 +16,13 @@ class BundleList extends PureComponent {
   handleMove = (event) => {
     const { offset, enter, leave } = event
     const enterElement = document.getElementById(enter.id)
-    // const leaveElement = document.getElementById(leave.id)
+    const leaveElement = document.getElementById(leave.id)
     const size = getComputedHeight(enterElement)
 
     const currPos = this.position
     const nextPos = offset === 1 ? this.position - size : this.position + size
 
-    // leaveElement.classList.add('fade-out')
+    leaveElement.classList.add('fade-out')
 
     moveElement({
       el: this.slider,

@@ -2,8 +2,10 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import { StyleSheet, css } from 'aphrodite'
+import { connect } from 'react-redux'
 import Focusable from './Focusable'
 import { resolution } from '../common/device'
+import { updateFocus } from '../redux'
 
 const recipes = {
   540: '203x114',
@@ -14,15 +16,19 @@ const recipes = {
 const imgSrc = (src) => src.replace('$recipe', recipes[resolution])
 
 class Card extends PureComponent {
+  handleOnFocus = ({ data }) => {
+    this.props.updateFocus(data)
+  }
+
   render () {
-    const { className, id, imgURL, title, subtitle, description, onFocus } = this.props
+    const { className, id, imgURL, title, subtitle, description } = this.props
     const data = { id, title, subtitle, description }
 
     return (
       <Focusable
         className={classNames(className, css(styles.card))}
-        onFocus={onFocus}
         data={data}
+        onFocus={this.handleOnFocus}
       >
         <img src={imgSrc(imgURL)} />
       </Focusable>
@@ -47,7 +53,7 @@ Card.propTypes = {
   title: PropTypes.string.isRequired,
   subtitle: PropTypes.string,
   description: PropTypes.string,
-  onFocus: PropTypes.func
+  updateFocus: PropTypes.func.isRequired
 }
 
-export default Card
+export default connect(null, { updateFocus })(Card)
