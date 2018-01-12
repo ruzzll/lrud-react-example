@@ -31,8 +31,7 @@
   },
   "scripts": {
     "dev": "webpack-dev-server",
-    "build": "NODE_ENV=production webpack",
-    "lint:src": "standard"
+    "build": "NODE_ENV=production webpack"
   },
   "dependencies": {
     "aphrodite": "^1.2.5",
