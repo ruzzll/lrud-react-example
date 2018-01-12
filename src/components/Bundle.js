@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import { StyleSheet, css } from 'aphrodite'
 import { once, debounce } from 'lodash'
-import { getComputedWidth } from '../common/device'
 import Focusable from './Focusable'
 import navigation from '../common/navigation'
+import { getComputedWidth } from '../common/device'
 import { moveElement } from '../common/animator'
 
 class Bundle extends PureComponent {

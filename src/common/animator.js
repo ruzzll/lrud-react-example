@@ -9,6 +9,8 @@ const setProperty = (el, prop, value = '') => {
 export const moveElement = ({ el, duration = 200, from = {}, to = {}, onComplete, skipAnim }) => {
   let rafid = null
 
+  if (!el) throw new Error('Invalid element')
+
   if (skipAnim) {
     const x = to.x || 0
     const y = to.y || 0
@@ -23,9 +25,6 @@ export const moveElement = ({ el, duration = 200, from = {}, to = {}, onComplete
       const y = this.y || 0
 
       setProperty(el, 'transform', `translate(${x}px, ${y}px)`)
-    })
-    .onStop(() => {
-      window.cancelAnimationFrame(rafid)
     })
     .onComplete(() => {
       window.cancelAnimationFrame(rafid)

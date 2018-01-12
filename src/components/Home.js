@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import { StyleSheet, css } from 'aphrodite'
+import BundleList from './BundleList'
 import Bundle from './Bundle'
 import Card from './Card'
 import Focusable from './Focusable'
@@ -32,7 +33,7 @@ class Home extends PureComponent {
             {episode.description}
           </div>
         </div>
-        <div className={css(styles.bundles)}>
+        <BundleList className={css(styles.bundles)}>
           {bundles.map((bundle, i) => (
             <Focusable key={i}>
               <div className={css(styles.title)}>
@@ -51,7 +52,7 @@ class Home extends PureComponent {
               </Bundle>
             </Focusable>
           ))}
-        </div>
+        </BundleList>
         <div className={css(styles.focus)} />
       </div>
     )

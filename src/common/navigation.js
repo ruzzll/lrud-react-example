@@ -17,6 +17,9 @@ navigation.on('focus', (id) => {
   }
 })
 
+// TODO: Remove this
+navigation.on('select', () => window.location.reload())
+
 // TODO: Implement in Lrud
 navigation.setActiveIndex = (id, index) => {
   const node = navigation.nodes[id]
