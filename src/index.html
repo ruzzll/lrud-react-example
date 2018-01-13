@@ -12,7 +12,6 @@
         720: 'body { font-size: 20px !important; line-height: 26px !important; } #app { width: 1280px; height: 720px; margin: -360px auto 0 auto; }',
         1080: 'body { font-size: 30px !important; line-height: 39px !important; } #app { width: 1920px; height: 1080px; margin: -540px auto 0 auto; }'
       }
-      var baseFontSize = { 720: 20, 1080: 30 }
       var match = window.location.search.match(/layout=(720|1080)/) || [ , 720 ]
       var resolution = parseInt(match[1], 10)
       var style = document.createElement('style')
