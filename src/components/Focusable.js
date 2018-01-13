@@ -5,8 +5,7 @@ import navigation from '../common/navigation'
 
 let autoid = 0
 
-const navigationProps = [
-  'type',
+const navProps = [
   'orientation',
   'onFocus',
   'onBlur',
@@ -33,25 +32,17 @@ class Focusable extends PureComponent {
   }
 
   render () {
-    navigation.register(this.id, {
-      parent: this.context.parent,
-      ...pick(this.props, navigationProps)
-    })
+    const { parent } = this.context
+    const id = this.id
 
-    return React.createElement(this.props.type, {
-      id: this.id,
-      ...omit(this.props, navigationProps)
-    })
+    navigation.register(id, { parent, ...pick(this.props, navProps) })
+
+    return React.createElement('div', { id, ...omit(this.props, navProps) })
   }
 }
 
 Focusable.propTypes = {
-  id: PropTypes.string,
-  type: PropTypes.string
-}
-
-Focusable.defaultProps = {
-  type: 'div'
+  id: PropTypes.string
 }
 
 Focusable.childContextTypes = {

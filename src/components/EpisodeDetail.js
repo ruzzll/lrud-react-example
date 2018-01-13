@@ -50,8 +50,6 @@ EpisodeDetail.propTypes = {
   description: PropTypes.string
 }
 
-const mapStateToProps = (state) => ({
-  ...getFocused(state)
-})
+const mapStateToProps = (state) => getFocused(state)
 
 export default connect(mapStateToProps)(EpisodeDetail)

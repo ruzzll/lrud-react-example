@@ -8,7 +8,6 @@ import { resolution } from '../common/device'
 import { updateFocus } from '../redux'
 
 const recipes = {
-  540: '203x114',
   720: '272x153',
   1080: '406x228'
 }

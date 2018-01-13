@@ -6,7 +6,7 @@ const navigation = new Lrud()
 navigation.on('move', (event) => {
   const node = navigation.nodes[event.id]
   if (node && node.onMove) {
-    node.onMove({ ...event, ...node })
+    node.onMove(event)
   }
 })
 
@@ -16,9 +16,6 @@ navigation.on('focus', (id) => {
     node.onFocus(node)
   }
 })
-
-// TODO: Remove this
-navigation.on('select', () => window.location.reload())
 
 // TODO: Implement in Lrud
 navigation.setActiveIndex = (id, index) => {
