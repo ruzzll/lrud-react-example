@@ -85,15 +85,15 @@ class Bundle extends PureComponent {
     let onComplete
 
     if (enterEl.parentNode.dataset.role === 'clone') {
-      if (offset === 1) {
-        onComplete = this.alignHead.bind(this)
-      } else {
-        onComplete = this.alignTail.bind(this)
-      }
+      onComplete = offset === 1
+        ? this.alignHead.bind(this)
+        : this.alignTail.bind(this)
     }
 
     const currPos = this.position
-    const nextPos = offset === 1 ? this.position - size : this.position + size
+    const nextPos = offset === 1
+      ? this.position - size
+      : this.position + size
 
     this.twee && this.tween.stop()
     this.tween = moveElement({
@@ -111,31 +111,27 @@ class Bundle extends PureComponent {
     this.position = nextPos
   }
 
-  buildSlide (child, role) {
+  buildSlide = (role) => (child) => {
     return (
       <div
         data-role={role}
         className={css(styles.slide)}
       >
-        {React.cloneElement(child)}
+        {child}
       </div>
     )
   }
 
   buildSlides (children) {
     return [
-      React.Children.map(children, (child, i) => this.buildSlide(child, 'clone')),
-      React.Children.map(children, (child, i) => this.buildSlide(child)),
-      React.Children.map(children, (child, i) => this.buildSlide(child, 'clone'))
+      React.Children.map(children, this.buildSlide('clone')),
+      React.Children.map(children, this.buildSlide()),
+      React.Children.map(children, this.buildSlide('clone'))
     ]
   }
 
   render () {
     const { id, className, orientation, children } = this.props
-
-    if (!this.slides) {
-      this.slides = this.buildSlides(children)
-    }
 
     return (
       <Focusable
@@ -144,7 +140,7 @@ class Bundle extends PureComponent {
         orientation={orientation}
         onMove={this.handleMove}
       >
-        {this.slides}
+        {this.buildSlides(children)}
       </Focusable>
     )
   }
@@ -152,8 +148,7 @@ class Bundle extends PureComponent {
 
 const styles = StyleSheet.create({
   slider: {
-    whiteSpace: 'nowrap',
-    position: 'relative'
+    whiteSpace: 'nowrap'
   },
   slide: {
     display: 'inline-block',
