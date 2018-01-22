@@ -3,6 +3,8 @@ html, body {
   padding: 0;
   margin: 0;
   overflow: hidden;
+  font-size: 20px;
+  line-height: 26px;
   font-family: sans-serif;
 }
 
@@ -10,8 +12,11 @@ html, body {
   position: relative;
   overflow: hidden;
   top: 50%;
+  width: 1280px;
+  height: 720px;
+  margin: -360px auto 0 auto;
   color: #ebebeb;
   background-color: #10101c;
-  background-image: url(//connected-tv.files.bbci.co.uk/tap/4.6.46.2/img/theme-backgrounds/background.iplayer.jpg);
+  background-image: url(//s3-eu-west-1.amazonaws.com/lrud-react-example/bg.jpg);
   background-size: 100%;
 }

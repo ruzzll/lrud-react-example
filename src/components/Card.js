@@ -4,15 +4,7 @@ import classNames from 'classnames'
 import { StyleSheet, css } from 'aphrodite'
 import { connect } from 'react-redux'
 import Focusable from './Focusable'
-import { resolution } from '../common/device'
 import { updateFocus } from '../redux'
-
-const recipes = {
-  720: '272x153',
-  1080: '406x228'
-}
-
-const imgSrc = (src) => src.replace('$recipe', recipes[resolution])
 
 class Card extends PureComponent {
   handleOnFocus = ({ data }) => {
@@ -29,7 +21,7 @@ class Card extends PureComponent {
         data={data}
         onFocus={this.handleOnFocus}
       >
-        <img src={imgSrc(imgURL)} />
+        <img src={imgURL} />
       </Focusable>
     )
   }

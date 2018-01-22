@@ -6,26 +6,6 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Lrud React Example</title>
   <style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
-  <script type="text/javascript">
-    (function () {
-      var styles = {
-        720: 'body { font-size: 20px !important; line-height: 26px !important; } #app { width: 1280px; height: 720px; margin: -360px auto 0 auto; }',
-        1080: 'body { font-size: 30px !important; line-height: 39px !important; } #app { width: 1920px; height: 1080px; margin: -540px auto 0 auto; }'
-      }
-      var match = window.location.search.match(/layout=(720|1080)/) || [ , 720 ]
-      var resolution = parseInt(match[1], 10)
-      var style = document.createElement('style')
-      var head = document.getElementsByTagName('head')[0]
-
-      style.type = 'text/css'
-      style.innerHTML = styles[resolution]
-      head.appendChild(style)
-
-      window.App = {
-        resolution: resolution
-      }
-    }())
-  </script>
 </head>
 <body>
   <div id="app"></div>

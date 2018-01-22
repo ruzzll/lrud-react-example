@@ -131,13 +131,13 @@ class Bundle extends PureComponent {
   }
 
   render () {
-    const { id, className, orientation, children } = this.props
+    const { id, className, children } = this.props
 
     return (
       <Focusable
         id={id}
         className={classNames(className, css(styles.slider))}
-        orientation={orientation}
+        orientation='horizontal'
         onMove={this.handleMove}
       >
         {this.buildSlides(children)}
@@ -159,15 +159,7 @@ const styles = StyleSheet.create({
 Bundle.propTypes = {
   id: PropTypes.string,
   className: PropTypes.string,
-  orientation: PropTypes.oneOf([
-    'vertical',
-    'horizontal'
-  ]),
   children: PropTypes.any
-}
-
-Bundle.defaultProps = {
-  orientation: 'horizontal'
 }
 
 export default Bundle
