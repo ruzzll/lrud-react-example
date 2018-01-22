@@ -35,9 +35,9 @@ class Focusable extends PureComponent {
     const { parent } = this.context
     const id = this.id
 
-    navigation.register(id, { parent, ...pick(this.props, navProps) })
+    navigation.register(id, Object.assign({ parent }, pick(this.props, navProps)))
 
-    return React.createElement('div', { id, ...omit(this.props, navProps) })
+    return React.createElement('div', Object.assign({ id }, omit(this.props, navProps)))
   }
 }
 

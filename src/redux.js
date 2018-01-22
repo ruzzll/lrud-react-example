@@ -17,7 +17,7 @@ const initialState = {
 
 // Reducer
 const reducer = handleActions({
-  [updateFocus]: (state, action) => ({ ...state, focused: action.payload })
+  [updateFocus]: (state, action) => Object.assign({}, state, { focused: action.payload })
 }, initialState)
 
 export default reducer

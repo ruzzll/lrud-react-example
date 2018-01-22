@@ -4,14 +4,12 @@ const CleanWebpackPlugin = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 
 let plugins = [
   new CleanWebpackPlugin([ 'public' ]),
   new HtmlWebpackPlugin({
     template: './src/index.html'
-  }),
-  new BundleAnalyzerPlugin()
+  })
 ]
 
 if (process.env.NODE_ENV === 'production') {
@@ -39,13 +37,45 @@ module.exports = {
     path: path.resolve(__dirname, './public')
   },
   module: {
-    rules: [{
-      test: /\.js$/,
-      loader: 'babel-loader'
-    }, {
-      test: /\.css$/,
-      use: [ 'style-loader', 'css-loader' ]
-    }]
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            plugins: [
+              'transform-class-properties',
+              'transform-react-jsx',
+              'lodash'
+            ],
+            presets: [
+              [
+                '@babel/preset-env',
+                {
+                  targets: {
+                    browsers: [
+                      'last 2 versions'
+                    ]
+                  },
+                  useBuiltIns: 'usage',
+                  modules: false,
+                  loose: true,
+                  debug: true
+                }
+              ]
+            ]
+          }
+        }
+      },
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader'
+        ]
+      }
+    ]
   },
   plugins,
   devtool: 'source-map',
