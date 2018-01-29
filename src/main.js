@@ -3,7 +3,6 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 import navigation from './common/navigation'
-import Focusable from './components/Focusable'
 import Home from './components/Home'
 import reducer from './redux'
 
@@ -14,10 +13,8 @@ const store = createStore(
 
 render(
   <Provider store={store}>
-    <Focusable id='root'>
-      <Home />
-    </Focusable>
+    <Home />
   </Provider>,
   document.getElementById('app'),
-  () => navigation.focus('root')
+  () => navigation.focus()
 )
