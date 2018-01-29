@@ -4,9 +4,13 @@ const CleanWebpackPlugin = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 
 let plugins = [
-  new CleanWebpackPlugin([ 'public' ]),
+  new BundleAnalyzerPlugin(),
+  new CleanWebpackPlugin([
+    'public'
+  ]),
   new HtmlWebpackPlugin({
     template: './src/index.html'
   })
