@@ -17,14 +17,6 @@ navigation.on('focus', (id) => {
   }
 })
 
-// TODO: Implement in Lrud
-navigation.setActiveIndex = (id, index) => {
-  const node = navigation.nodes[id]
-  if (node) {
-    node.activeChild = node.children[index] || node.activeChild
-  }
-}
-
 document.onkeydown = throttle((event) => {
   if (Lrud.KEY_CODES[event.keyCode]) {
     navigation.handleKeyEvent(event)
