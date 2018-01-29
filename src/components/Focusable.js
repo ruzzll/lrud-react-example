@@ -1,9 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { pick, omit } from 'lodash'
+import { uniqueId, pick, omit } from 'lodash'
 import navigation from '../common/navigation'
-
-let autoid = 0
 
 const navProps = [
   'orientation',
@@ -18,7 +16,7 @@ class Focusable extends PureComponent {
   constructor (props) {
     super(props)
 
-    this.id = props.id || `focusable-${++autoid}`
+    this.id = props.id || uniqueId('focusable_')
   }
 
   getChildContext () {
@@ -35,9 +33,15 @@ class Focusable extends PureComponent {
     const { parent } = this.context
     const id = this.id
 
-    navigation.register(id, Object.assign({ parent }, pick(this.props, navProps)))
+    navigation.register(id, Object.assign(
+      { parent },
+      pick(this.props, navProps))
+    )
 
-    return React.createElement('div', Object.assign({ id }, omit(this.props, navProps)))
+    return React.createElement('div', Object.assign(
+      { id },
+      omit(this.props, navProps))
+    )
   }
 }
 
