@@ -60,7 +60,7 @@ class BundleList extends PureComponent {
       <Focusable
         id={id}
         className={className}
-        orientation='vertical'
+        vertical
         onMove={this.handleMove}
       >
         {children}

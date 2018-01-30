@@ -1,14 +1,15 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { uniqueId, pick, omit } from 'lodash'
+import { uniqueId, pick } from 'lodash'
 import navigation from '../common/navigation'
 
 const navProps = [
-  'orientation',
   'onFocus',
   'onBlur',
   'onSelect',
   'onMove',
+  'grid',
+  'wrapping',
   'data'
 ]
 
@@ -30,23 +31,37 @@ class Focusable extends PureComponent {
   }
 
   render () {
+    const { vertical, horizontal, className, children, element } = this.props
     const { parent } = this.context
-    const id = this.id
 
-    navigation.register(id, Object.assign(
-      { parent },
-      pick(this.props, navProps))
-    )
+    let orientation
+    if (vertical) orientation = 'vertical'
+    if (horizontal) orientation = 'horizontal'
 
-    return React.createElement('div', Object.assign(
-      { id },
-      omit(this.props, navProps))
-    )
+    navigation.register(this.id, Object.assign({
+      parent,
+      orientation
+    }, pick(this.props, navProps)))
+
+    return React.createElement(element, {
+      id: this.id,
+      className,
+      children
+    })
   }
 }
 
 Focusable.propTypes = {
-  id: PropTypes.string
+  id: PropTypes.string,
+  className: PropTypes.string,
+  children: PropTypes.any,
+  element: PropTypes.string,
+  vertical: PropTypes.bool,
+  horizontal: PropTypes.bool
+}
+
+Focusable.defaultProps = {
+  element: 'div'
 }
 
 Focusable.childContextTypes = {

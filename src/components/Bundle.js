@@ -137,7 +137,7 @@ class Bundle extends PureComponent {
       <Focusable
         id={id}
         className={classNames(className, css(styles.slider))}
-        orientation='horizontal'
+        horizontal
         onMove={this.handleMove}
       >
         {this.buildSlides(children)}
