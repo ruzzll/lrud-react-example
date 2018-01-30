@@ -5,16 +5,12 @@ const navigation = new Lrud()
 
 navigation.on('move', (event) => {
   const node = navigation.nodes[event.id]
-  if (node && node.onMove) {
-    node.onMove(event)
-  }
+  node.onMove && node.onMove(event)
 })
 
 navigation.on('focus', (id) => {
   const node = navigation.nodes[id]
-  if (node && node.onFocus) {
-    node.onFocus(node)
-  }
+  node.onFocus && node.onFocus(node)
 })
 
 document.onkeydown = throttle((event) => {
