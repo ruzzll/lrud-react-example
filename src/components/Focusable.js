@@ -26,7 +26,7 @@ class Focusable extends PureComponent {
     }
   }
 
-  componentWillUnmounnt () {
+  componentWillUnmount () {
     navigation.unregister(this.id)
   }
 
